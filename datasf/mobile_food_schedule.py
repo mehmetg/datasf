@@ -1,15 +1,17 @@
-from datasf.socrata_client import SocrataClient
-from colorama import (
-    Fore,
-    Style,
-)
+import logging
+from datetime import datetime
 from typing import (
     Tuple,
     List,
 )
-from datetime import datetime
+
 import pytz
-import logging
+from colorama import (
+    Fore,
+    Style,
+)
+
+from datasf.socrata_client import SocrataClient
 
 LOGGER = logging.getLogger(__name__)
 
@@ -53,8 +55,7 @@ class MobileFoodSchedule(object):
         mfs_parser.add_argument("--day", type=int, default=today, required=False,
                                 help="Day of the week 0: Sunday, ..., 7: Monday, default: today")
         mfs_parser.add_argument("--time", type=str, default=now, required=False,
-                                help="Time of the day in 24hr format: HH:MM")
-
+                                help="Time of the day in 24hr format: HH:MM, default: current time")
 
     @classmethod
     def format_output(cls, data: List[dict]) -> str:
@@ -104,6 +105,7 @@ class MobileFoodSchedule(object):
         print(self.format_output([dict(zip(self.FIELDS, self.HEADERS))]))
         for batch in self.get(day=day, time=time, page_size=page_size, page_offset=page_offset):
             print(batch)
-            resp = input(f"Please hit {Fore.LIGHTGREEN_EX}enter{Style.RESET_ALL} to continue, {Fore.RED}q + enter{Style.RESET_ALL} to abort.")
+            resp = input(
+                f"Please hit {Fore.LIGHTGREEN_EX}enter{Style.RESET_ALL} to continue, {Fore.RED}q + enter{Style.RESET_ALL} to abort.")
             if resp.strip() == 'q':
                 break

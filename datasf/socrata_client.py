@@ -1,13 +1,13 @@
+import logging
 import os
+from typing import (
+    Any,
+)
+
 from requests import (
     Session,
     HTTPError,
 )
-
-from typing import (
-    Any,
-)
-import logging
 
 LOGGER = logging.getLogger(__name__)
 

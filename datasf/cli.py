@@ -1,18 +1,17 @@
-from typing import (
-    List,
-)
-from datasf.mobile_food_schedule import MobileFoodSchedule
-
+import logging
+import os
 from argparse import (
     ArgumentParser,
     Namespace,
 )
-import logging
-import os
+from typing import (
+    List,
+)
+
+from datasf.mobile_food_schedule import MobileFoodSchedule
 
 logging.basicConfig(level=logging.getLevelName(os.getenv("LOG_LEVEL", "WARNING")))
 LOGGER = logging.getLogger(__name__)
-
 
 DATA_SETS = {
     MobileFoodSchedule.DATASET_NAME: MobileFoodSchedule.DATASET_ID,
@@ -24,20 +23,16 @@ def process_args(args: List[str] = []) -> Namespace:
     parser = ArgumentParser(description="Tool to interact with Data SF data sets")
     subparsers = parser.add_subparsers(dest="dataset_name")
     base_parser = ArgumentParser(add_help=False)
-    base_parser.add_argument("--query", type=str, default=None, required=False,
-                            help="Raw query to pass to execute")
     base_parser.add_argument("--page-size", type=int, default=10, required=False,
-                            help="Number of results to show per page")
+                             help="Number of results to show per page, default: 10")
     base_parser.add_argument("--page-offset", type=int, default=0, required=False,
-                            help="Results to skip")
+                             help="Results to skip: default: 0")
     MobileFoodSchedule.add_parsers(subparsers=subparsers, base_parser=base_parser)
     subparsers.required = True
     return parser.parse_args(namespace=base_parser.parse_args(args))
 
 
 def main() -> None:
-    import sys
-    print(sys.argv)
     args = process_args()
     LOGGER.debug(args)
     # decide which data accessor to use we can use
