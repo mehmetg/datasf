@@ -118,4 +118,7 @@ The parser is set up in a way that more subparsers can be added to the program t
 ```CRITICAL, FATAL, ERROR, WARNING, INFO, DEBUG```
 
 * If the user is throttled due to a lack of proper authentication the tool will display an error and quit. User
-must wait until the back off period expires or use authentication. 
+must wait until the back off period expires or use authentication.
+
+* If the user gets throttled by the API there's no automatic back off just an informative error message. This certainly 
+can be improved upon. 
